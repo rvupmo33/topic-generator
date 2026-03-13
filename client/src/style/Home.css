@@ -1,0 +1,20 @@
+.generator-container {
+  text-align: center;
+  width: 80%;
+}
+
+.topic {
+  padding: 20px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button-container button {
+  padding: 10px 40px;
+  cursor: pointer;
+}
