@@ -1,10 +1,15 @@
 .generator-container {
   text-align: center;
   width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .topic {
   padding: 20px;
+  padding-top: 150px;
 }
 
 .button-container {
@@ -17,4 +22,13 @@
 .button-container button {
   padding: 10px 40px;
   cursor: pointer;
+  user-select: none;
+}
+
+.timer-container {
+  border: 1px solid gray;
+  border-radius: 5px;
+  width: fit-content;
+  margin-top: 50px;
+  padding: 0px 70px;
 }
