@@ -1,12 +1,21 @@
 import React, { useRef, useState } from "react";
 import "../style/Home.css";
 import { myTopics } from "../data/topics";
+import useSound from "use-sound";
+import Sfx from "../../src/sounds/tres-sound.mp3";
 
 const Home = () => {
   const [currentTopic, setCurrentTopic] = useState("Generate A Topic");
-  const [isVisible, setIsVisible] = useState(false);
+  const [isSpeechVisible, setSpeechVisible] = useState(false);
+  const [isBrainStormVisible, setBrainStormVisible] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft2, setTimeLeft2] = useState(180);
   const timerRef = useRef(null);
+
+  const [playTimeOver] = useSound(Sfx, {
+    volume: 0.25,
+    duration: 1500,
+  });
 
   const generateTopic = (e) => {
     e.preventDefault();
@@ -19,24 +28,48 @@ const Home = () => {
     }, 500);
   };
 
-  const startTimer = (e) => {
+  const startBrainstormTimer = (e) => {
     e.preventDefault();
 
-    if (!isVisible) {
-      setIsVisible(true);
+    if (!isBrainStormVisible) {
+      setBrainStormVisible(true);
       setTimeLeft(60);
 
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
+            playTimeOver();
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
     } else {
-      setIsVisible(false);
+      setBrainStormVisible(false);
+      clearInterval(timerRef.current);
+    }
+  };
+
+  const startSpeechTimer = (e) => {
+    e.preventDefault();
+
+    if (!isSpeechVisible) {
+      setSpeechVisible(true);
+      setTimeLeft2(180);
+
+      timerRef.current = setInterval(() => {
+        setTimeLeft2((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            playTimeOver();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      setSpeechVisible(false);
       clearInterval(timerRef.current);
     }
   };
@@ -53,14 +86,23 @@ const Home = () => {
       {/*  */}
       <div className="button-container">
         <button onClick={generateTopic}>generate topic</button>
-        <button onClick={startTimer}>
-          {isVisible ? "hide timer" : "start timer"}
+        <button onClick={startBrainstormTimer}>
+          {isBrainStormVisible ? "hide brainstorm timer" : "brainstorm timer"}
+        </button>
+        <button onClick={startSpeechTimer}>
+          {isSpeechVisible ? "hide speech timer" : "speech timer"}
         </button>
       </div>
       {/*  */}
-      {isVisible && (
+      {isBrainStormVisible && (
         <div className="timer-container">
           <h3>{formatTime(timeLeft)}</h3>
+        </div>
+      )}
+
+      {isSpeechVisible && (
+        <div className="timer-container">
+          <h3>{formatTime(timeLeft2)}</h3>
         </div>
       )}
     </div>
